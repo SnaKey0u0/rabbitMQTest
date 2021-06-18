@@ -13,28 +13,42 @@ import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 @Configuration
 public class MessagingConfig{
-	public static final String EXCHANGE = "javatechie_exchange";
-
-    public static final String QUEUE = "javatechie_queue";
-
-    public static final String ROUTING_KEY = "javatechie_routingKey";
-    @Bean
-	public Queue queue(){
+	public static final String QUEUE ="my_queue";
+	public static final String EXCHANGE ="my_exchange";
+	public static final String ROUTING_KEY ="my_routingKey";
+	
+	public static final String QUEUE_2 ="my_queue2";
+	public static final String ROUTING_KEY_2 ="my_routingKey2";
+	@Bean
+	public Queue queue() {
 		return new Queue(QUEUE);
 	}
-    @Bean
+	
+	@Bean
+	public Queue queue2() {
+		return new Queue(QUEUE_2);
+	}
+	
+	@Bean
 	public TopicExchange exchange() {
 		return new TopicExchange(EXCHANGE);
 	}
-    @Bean
-	public Binding binding(Queue queue,TopicExchange exchange) {
-		return BindingBuilder.bind(queue).to(exchange).with(ROUTING_KEY);
+	@Bean
+	public Binding binding(TopicExchange exchange) {
+		return BindingBuilder.bind(queue()).to(exchange).with(ROUTING_KEY);
 	}
-    @Bean
+	
+	@Bean
+	public Binding binding2(TopicExchange exchange) {
+		return BindingBuilder.bind(queue2()).to(exchange).with(ROUTING_KEY_2);
+	}
+	
+	@Bean
 	public MessageConverter converter() {
 		return new Jackson2JsonMessageConverter();
 	}
-    @Bean
+	
+	@Bean
 	public AmqpTemplate template(ConnectionFactory connectionFactory) {
 		final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
 		rabbitTemplate.setMessageConverter(converter());

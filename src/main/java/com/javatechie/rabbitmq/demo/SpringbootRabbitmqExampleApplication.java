@@ -1,13 +1,13 @@
-package rabbit.test;
+package com.javatechie.rabbitmq.demo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class RabbitMqTestApplication {
+public class SpringbootRabbitmqExampleApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(RabbitMqTestApplication.class, args);
+		SpringApplication.run(SpringbootRabbitmqExampleApplication.class, args);
 	}
 
 }

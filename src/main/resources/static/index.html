@@ -12,6 +12,15 @@
             $(document).ready(function () {
                 $('[data-toggle="popover"]').popover();
             });
+            function processFormData() {
+				var customerName = document.getElementById("customerName").value;
+				var restaurantName = document.getElementById("restaurantName").value;
+			  	var hamburger = document.getElementById("hamburger").value;
+			  	var frenchFries = document.getElementById("frenchFries").value;
+			  	var milktea = document.getElementById("milktea").value;
+			  
+			  alert("你的名字是" + customerName + "\n餐廳是 " + restaurantName+"\n漢堡要 "+ hamburger+"個\n薯條要 "+frenchFries+"個\n奶茶要 "+milktea+"杯");
+			}
         </script>
     </head>
 
@@ -21,21 +30,25 @@
             <p>姆咪姆咪星爆爆</p>
             <form action="/action_page.php">
                 <div class="form-group">
+                	<label for="usr1">顧客姓名:</label>
+                    <input type="text" class="form-control" id="customerName" value="0" />
+                    <br />
                     <label for="sel1">選擇餐廳:</label>
-                    <select class="form-control" id="sel1" name="sellist1">
+                    <select class="form-control" id="restaurantName" name="sellist1">
                         <option>麥當勞</option>
                         <option>肯德基</option>
                         <option>漢堡王</option>
                     </select>
                     <br />
-                    <label for="usr1">輸入漢堡數量:</label>
-                    <input type="number" class="form-control" id="usr1" value="0" />
+                    
+                    <label for="hamburger">輸入漢堡數量:</label>
+                    <input type="number" class="form-control" id="hamburger" value="0" />
                     <br />
-                    <label for="usr2">輸入薯條數量:</label>
-                    <input type="number" class="form-control" id="usr2" value="0" />
+                    <label for="frenchFries">輸入薯條數量:</label>
+                    <input type="number" class="form-control" id="frenchFries" value="0" />
                     <br />
-                    <label for="usr3">輸入奶茶數量:</label>
-                    <input type="number" class="form-control" id="usr3" value="0" />
+                    <label for="milktea">輸入奶茶數量:</label>
+                    <input type="number" class="form-control" id="milktea" value="0" />
                     <!-- <label for="sel2">Mutiple select list (hold shift to select more than one):</label>
                     <select multiple class="form-control" id="sel2" name="sellist2">
                         <option>1</option>
@@ -47,7 +60,8 @@
                 </div>
                 <button type="submit" class="btn btn-primary">加入購物車</button>
                 <button type="submit" class="btn btn-primary">清除購物車</button>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">送出訂單</button>
+                <button type="button" class="btn btn-primary" data-toggle="modal" onclick="processFormData();">送出訂單</button>
+                <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">送出訂單</button>-->
             </form>
         </div>
 
@@ -77,6 +91,7 @@
             <!--$('[data-toggle="popover"]').attr('有東西'); -->
         </div>
         <hr />
+        
         <div class="container">
             <button type="button" class="btn btn-primary">查看歷史訂單</button>
         </div>

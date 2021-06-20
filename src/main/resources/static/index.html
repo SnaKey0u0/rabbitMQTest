@@ -38,9 +38,9 @@
                     },
                 });
 			}
-			function checkOrder() {
+			function checkOrder(customerName) {
                 $.ajax({
-                    url:"http://localhost:8097/customer/checkOrders",
+                    url:"http://localhost:8097/customer/checkOrders/"+customerName,
                     contentType: "application/json;charset=utf-8",
                     type: "GET",
                     dataType: "json",
@@ -55,14 +55,14 @@
                                         <td>${returnData[i].customerName}</td>
                                         <td>${returnData[i].orderTime}</td>
                                         <td>
-                                          "漢堡: "+${returnData[i].orderContent.hamburger}+"\n"
-                                          "薯條: "+${returnData[i].orderContent.frenchFries}+"\n"
-                                          "奶茶: "+${returnData[i].orderContent.milktea}
+                                          漢堡: ${returnData[i].orderContent.hamburger}<br>
+                                          薯條: ${returnData[i].orderContent.frenchFries}<br>
+                                          奶茶: ${returnData[i].orderContent.milktea}
                                         </td>
                                         <td><button class="btn btn-primary" onclick="confirmOrder(${i})">確認</button></td>
                                     </tr>`;
                         }
-                        $('#myTable').text(tableContent)
+                        $('#myTable').html(tableContent)
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
                         console.log(xhr.status);
@@ -142,7 +142,7 @@
         <hr />
         
         <div class="container">
-            <button type="button" class="btn btn-primary" onclick="checkOrder();">查看歷史訂單</button>
+            <button type="button" class="btn btn-primary" onclick="checkOrder(2);">查看歷史訂單</button>
         </div>
         <table class="table table-bordered">
                 <thead>

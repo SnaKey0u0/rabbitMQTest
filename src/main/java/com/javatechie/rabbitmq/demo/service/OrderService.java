@@ -29,7 +29,6 @@ public class OrderService {
 		System.out.print("新增資料庫時"+order);
 		return repository.insert(order);
 	}
-	
 //	public Order getOrder(String customerName) {
 //		List<Order> order = repository.findByCustomerName(customerName);
 //		return order.get(0);

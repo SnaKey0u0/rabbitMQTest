@@ -2,6 +2,9 @@ package com.javatechie.rabbitmq.demo.roles;
 
 import java.util.ArrayList;
 
+import javax.websocket.server.PathParam;
+
+import org.bson.json.JsonObject;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,12 +41,13 @@ public class Waiter {
 		return array;
 	}
 	
-	@PostMapping(value = "/confirmOrder")
-	public String confirmOrder(@RequestBody int n) {
+	@PostMapping(value = "/confirmOrder/{position}")
+	public JsonObject confirmOrder(@PathVariable("position")String position) {
 		//轉交訂單給廚師
-		template.convertAndSend(MessagingConfig.EXCHANGE, MessagingConfig.ROUTING_KEY_2,array.get(n));
+		int n = Integer.valueOf(position);
+		template.convertAndSend(MessagingConfig.EXCHANGE_2, MessagingConfig.ROUTING_KEY_2,array.get(n));
 		//移除暫存訂單
 		array.remove(n);
-		return "success";
+		return new JsonObject("{'msg':'success'}");
 	}
 }

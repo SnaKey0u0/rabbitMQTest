@@ -18,6 +18,7 @@ public class MessagingConfig{
 	public static final String ROUTING_KEY ="my_routingKey";
 	
 	public static final String QUEUE_2 ="my_queue2";
+	public static final String EXCHANGE_2 ="my_exchange2";
 	public static final String ROUTING_KEY_2 ="my_routingKey2";
 	@Bean
 	public Queue queue() {
@@ -33,6 +34,12 @@ public class MessagingConfig{
 	public TopicExchange exchange() {
 		return new TopicExchange(EXCHANGE);
 	}
+	
+	@Bean
+	public TopicExchange exchange2() {
+		return new TopicExchange(EXCHANGE_2);
+	}
+	
 	@Bean
 	public Binding binding(TopicExchange exchange) {
 		return BindingBuilder.bind(queue()).to(exchange).with(ROUTING_KEY);
@@ -40,7 +47,7 @@ public class MessagingConfig{
 	
 	@Bean
 	public Binding binding2(TopicExchange exchange) {
-		return BindingBuilder.bind(queue2()).to(exchange).with(ROUTING_KEY_2);
+		return BindingBuilder.bind(queue2()).to(exchange2()).with(ROUTING_KEY_2);
 	}
 	
 	@Bean

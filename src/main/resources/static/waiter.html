@@ -33,14 +33,14 @@
                                         <td>${returnData[i].customerName}</td>
                                         <td>${returnData[i].orderTime}</td>
                                         <td>
-                                          "漢堡: "+${returnData[i].orderContent.hamburger}+"\n"
-                                          "薯條: "+${returnData[i].orderContent.frenchFries}+"\n"
-                                          "奶茶: "+${returnData[i].orderContent.milktea}
+                                          漢堡: ${returnData[i].orderContent.hamburger}<br>
+                                          薯條: ${returnData[i].orderContent.frenchFries}<br>
+                                          奶茶: ${returnData[i].orderContent.milktea}
                                         </td>
                                         <td><button class="btn btn-primary" onclick="confirmOrder(${i})">確認</button></td>
                                     </tr>`;
                         }
-                        $('#myTable').text(tableContent)
+                        $('#myTable').html(tableContent)
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
                         console.log(xhr.status);
@@ -51,16 +51,16 @@
 
             function confirmOrder(i){
                 $.ajax({
-                    url: "http://localhost:8097/waiter/confirmOrder",
+                    url: "http://localhost:8097/waiter/confirmOrder/"+i,
                     type: "POST",
-                    data: i,
+                    data: "",
                     dataType: "json",
                     contentType: "application/json;charset=utf-8",
                     success: function (returnData) {
                         window.alert(
-                            "確認成功"
+                            "success"
                         );
-                        window.reload
+                        location.reload();
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
                         console.log(xhr.status);

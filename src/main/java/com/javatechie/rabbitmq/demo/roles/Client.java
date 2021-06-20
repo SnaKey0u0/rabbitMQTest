@@ -2,6 +2,7 @@ package com.javatechie.rabbitmq.demo.roles;
 
 import java.util.UUID;
 
+import org.bson.json.JsonObject;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class Client {
     private OrderService OrderService;
 	
 	@PostMapping(value = "/addOrder")
-	public String addOrder(@RequestBody Order order) {
+	public JsonObject addOrder(@RequestBody Order order) {
 		SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		Date date = new Date();
 		String strDate = sdFormat.format(date);
@@ -38,7 +39,7 @@ public class Client {
 //		Order order = new Order(order,"PROCESS","order place successfully");
 		//轉交訂單給服務生
 		template.convertAndSend(MessagingConfig.EXCHANGE, MessagingConfig.ROUTING_KEY,order);
-		return "addSuccess";
+		return new JsonObject("{'msg':'success'}");
 	}
 //	@GetMapping(value = "checkOrders/{customerName}")
 //	public ResponseEntity<Order> checkOrders(@PathVariable("customerName") String customerName) {

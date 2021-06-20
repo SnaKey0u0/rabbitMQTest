@@ -10,6 +10,7 @@ import com.javatechie.rabbitmq.demo.repository.OrderRepository;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,10 +29,17 @@ public class OrderService {
 		System.out.print("新增資料庫時"+order);
 		return repository.insert(order);
 	}
-//	public Order getNote(String id) {
-//		List<Order> notes = repository.findByPharmacyId(id);
-//		return notes.get(0);
+	
+//	public Order getOrder(String customerName) {
+//		List<Order> order = repository.findByCustomerName(customerName);
+//		return order.get(0);
 //	}
+	public ArrayList<Order> getOrder(String customerName) {
+		
+		ArrayList<Order> order = (ArrayList<Order>) repository.findByCustomerName(customerName);
+		
+		return order;
+	}
 	
 
 }

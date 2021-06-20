@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.javatechie.rabbitmq.demo.config.MessagingConfig;
 import com.javatechie.rabbitmq.demo.dto.Order;
 import com.javatechie.rabbitmq.demo.service.OrderService;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
@@ -22,7 +25,8 @@ import java.text.SimpleDateFormat;
 public class Client {
 	@Autowired
 	private RabbitTemplate template;
-	
+	@Autowired
+    private OrderService OrderService;
 	
 	@PostMapping(value = "/addOrder")
 	public String addOrder(@RequestBody Order order) {
@@ -36,9 +40,17 @@ public class Client {
 		template.convertAndSend(MessagingConfig.EXCHANGE, MessagingConfig.ROUTING_KEY,order);
 		return "addSuccess";
 	}
-	@GetMapping(value = "checkOrders/{customerName}")
-	public String checkOrders(@PathVariable("customerName") String customerName) {
-		return "fuck 還沒做資料庫查詢";
+//	@GetMapping(value = "checkOrders/{customerName}")
+//	public ResponseEntity<Order> checkOrders(@PathVariable("customerName") String customerName) {
+//		Order order = OrderService.getOrder(customerName);
+//    	
+//        return ResponseEntity.ok(order);
+//	}
+	@GetMapping(value = "/checkOrders/{customerName}")
+	public ResponseEntity<ArrayList<Order>> checkOrders(@PathVariable("customerName") String customerName) {
+		ArrayList<Order> order = OrderService.getOrder(customerName);
+    	
+		return ResponseEntity.ok(order);
 	}
 	@GetMapping(value = "checkShoppingCar/{customerName}")
 	public String checkShoppingCar(@PathVariable("customerName") String customerName) {

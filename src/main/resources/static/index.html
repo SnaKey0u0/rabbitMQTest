@@ -1,0 +1,84 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>餐廳訂餐系統</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('[data-toggle="popover"]').popover();
+            });
+        </script>
+    </head>
+
+    <body>
+        <div class="container">
+            <h2>海洋大學學餐菜單</h2>
+            <p>姆咪姆咪星爆爆</p>
+            <form action="/action_page.php">
+                <div class="form-group">
+                    <label for="sel1">選擇餐廳:</label>
+                    <select class="form-control" id="sel1" name="sellist1">
+                        <option>麥當勞</option>
+                        <option>肯德基</option>
+                        <option>漢堡王</option>
+                    </select>
+                    <br />
+                    <label for="usr1">輸入漢堡數量:</label>
+                    <input type="number" class="form-control" id="usr1" value="0" />
+                    <br />
+                    <label for="usr2">輸入薯條數量:</label>
+                    <input type="number" class="form-control" id="usr2" value="0" />
+                    <br />
+                    <label for="usr3">輸入奶茶數量:</label>
+                    <input type="number" class="form-control" id="usr3" value="0" />
+                    <!-- <label for="sel2">Mutiple select list (hold shift to select more than one):</label>
+                    <select multiple class="form-control" id="sel2" name="sellist2">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </select> -->
+                </div>
+                <button type="submit" class="btn btn-primary">加入購物車</button>
+                <button type="submit" class="btn btn-primary">清除購物車</button>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">送出訂單</button>
+            </form>
+        </div>
+
+        <!-- The Modal -->
+        <div class="modal fade" id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Modal Heading</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">Modal body..</div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <a href="#" data-toggle="popover" title="購物車內容" data-content="沒有東西">購物車</a>
+            <!--$('[data-toggle="popover"]').attr('有東西'); -->
+        </div>
+        <hr />
+        <div class="container">
+            <button type="button" class="btn btn-primary">查看歷史訂單</button>
+        </div>
+    </body>
+</html>

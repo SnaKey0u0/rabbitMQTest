@@ -15,7 +15,10 @@ public interface OrderRepository extends MongoRepository<Order, String> {
 //	<Note> findByPharmacyId(String pharmacyId);
 	
 //	List<OrderStatus> findByPharmacyId(String pharmacyId);
-	List<Order> findByorderIdLike(String orderId);
+//	List<Order> findByorderCustomerNameLike(String CustomerName);
+
+	List<Order> findByCustomerName(String CustomerName);
+	
 
 
 }

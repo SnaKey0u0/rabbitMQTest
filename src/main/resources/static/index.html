@@ -18,8 +18,26 @@
 			  	var hamburger = document.getElementById("hamburger").value;
 			  	var frenchFries = document.getElementById("frenchFries").value;
 			  	var milktea = document.getElementById("milktea").value;
-			  
-			  alert("你的名字是" + customerName + "\n餐廳是 " + restaurantName+"\n漢堡要 "+ hamburger+"個\n薯條要 "+frenchFries+"個\n奶茶要 "+milktea+"杯");
+			  	var content2={'hamburger':hamburger,'frenchFries':frenchFries,'milktea':milktea}
+			  	var dataContent= {'customerName':customerName,'restaurantName':restaurantName,'orderContent':content2}
+                
+                
+                $.ajax({
+                    url: "http://localhost:8097/customer/addOrder",
+                    type: "POST",
+                    data:dataContent,
+                    dataType: "json",
+                    contentType: "application/json;charset=utf-8",
+                    success: function (returnData) {
+                        window.alert(
+                            "你的名字是" + customerName + "\n餐廳是 " + restaurantName+"\n漢堡要 "+ hamburger+"個\n薯條要 "+frenchFries+"個\n奶茶要 "+milktea+"杯"
+                        );
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        console.log(xhr.status);
+                        console.log(thrownError);
+                    },
+                });
 			}
         </script>
     </head>
@@ -28,7 +46,7 @@
         <div class="container">
             <h2>海洋大學學餐菜單</h2>
             <p>姆咪姆咪星爆爆</p>
-            <form action="/action_page.php">
+            <form action="#">
                 <div class="form-group">
                 	<label for="usr1">顧客姓名:</label>
                     <input type="text" class="form-control" id="customerName" value="0" />
@@ -42,13 +60,13 @@
                     <br />
                     
                     <label for="hamburger">輸入漢堡數量:</label>
-                    <input type="number" class="form-control" id="hamburger" value="0" />
+                    <input type="number" class="form-control" id="hamburger" value="0" min="0"/>
                     <br />
                     <label for="frenchFries">輸入薯條數量:</label>
-                    <input type="number" class="form-control" id="frenchFries" value="0" />
+                    <input type="number" class="form-control" id="frenchFries" value="0" min="0"/>
                     <br />
                     <label for="milktea">輸入奶茶數量:</label>
-                    <input type="number" class="form-control" id="milktea" value="0" />
+                    <input type="number" class="form-control" id="milktea" value="0" min="0"/>
                     <!-- <label for="sel2">Mutiple select list (hold shift to select more than one):</label>
                     <select multiple class="form-control" id="sel2" name="sellist2">
                         <option>1</option>

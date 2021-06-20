@@ -16,8 +16,58 @@
                   $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
               });
-              //Call API
+              
+              $.ajax({
+                    url:"http://localhost:8097/waiter/checkOrders",
+                    contentType: "application/json;charset=utf-8",
+                    type: "GET",
+                    dataType: "json",
+                    success: function (returnData) {
+                        console.log(returnData);
+                        tableContent=''
+                        for (var i = 0; i < returnData.length; i++) {
+                          tableContent += 
+                                    `<tr>
+                                        <td>${returnData[i].orderId}</td> 
+                                        <td>${returnData[i].restaurantName}</td>
+                                        <td>${returnData[i].customerName}</td>
+                                        <td>${returnData[i].orderTime}</td>
+                                        <td>
+                                          "漢堡: "+${returnData[i].orderContent.hamburger}+"\n"
+                                          "薯條: "+${returnData[i].orderContent.frenchFries}+"\n"
+                                          "奶茶: "+${returnData[i].orderContent.milktea}
+                                        </td>
+                                        <td><button class="btn btn-primary" onclick="confirmOrder(${i})">確認</button></td>
+                                    </tr>`;
+                        }
+                        $('#myTable').text(tableContent)
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        console.log(xhr.status);
+                        console.log(thrownError);
+                    },
+                });
             });
+
+            function confirmOrder(i){
+                $.ajax({
+                    url: "http://localhost:8097/waiter/confirmOrder",
+                    type: "POST",
+                    data: i,
+                    dataType: "json",
+                    contentType: "application/json;charset=utf-8",
+                    success: function (returnData) {
+                        window.alert(
+                            "確認成功"
+                        );
+                        window.reload
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        console.log(xhr.status);
+                        console.log(thrownError);
+                    },
+                });
+            }
             </script>
     </head>
 
@@ -32,14 +82,16 @@
               <table class="table table-bordered">
                 <thead>
                   <tr>
-                    <th>Firstname</th>
-                    <th>Lastname</th>
-                    <th>Email</th>
+                    <th>訂單編號</th>
+                    <th>餐廳名稱</th>
+                    <th>姓名</th>
+                    <th>訂單時間</th>
+                    <th>訂單內容</th>
                     <th>確認訂單</th>
                   </tr>
                 </thead>
                 <tbody id="myTable">
-                  <tr>
+                  <!-- <tr>
                     <td>John</td>
                     <td>Doe</td>
                     <td>john@example.com</td>
@@ -70,7 +122,7 @@
                     <td>
                         <button class="btn btn-primary">確認</button>
                     </td>
-                  </tr>
+                  </tr> -->
                 </tbody>
               </table>
               

@@ -1,0 +1,81 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>服務生系統</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script>
+            $(document).ready(function(){
+              $("#myInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function() {
+                  $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+              });
+              //Call API
+            });
+            </script>
+    </head>
+
+    <body>
+        <body>
+
+            <div class="container mt-3">
+              <h2>服務生系統</h2>
+              <p>服務生可查看目前訂單並轉交給廚師</p>  
+              <input class="form-control" id="myInput" type="text" placeholder="Search..">
+              <br>
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th>Email</th>
+                    <th>確認訂單</th>
+                  </tr>
+                </thead>
+                <tbody id="myTable">
+                  <tr>
+                    <td>John</td>
+                    <td>Doe</td>
+                    <td>john@example.com</td>
+                    <td>
+                        <button class="btn btn-primary">確認</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Mary</td>
+                    <td>Moe</td>
+                    <td>mary@mail.com</td>
+                    <td>
+                        <button class="btn btn-primary">確認</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>July</td>
+                    <td>Dooley</td>
+                    <td>july@greatstuff.com</td>
+                    <td>
+                        <button class="btn btn-primary">確認</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Anja</td>
+                    <td>Ravendale</td>
+                    <td>a_r@test.com</td>
+                    <td>
+                        <button class="btn btn-primary">確認</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              <p>Note that we start the search in tbody, to prevent filtering the table headers.</p>
+            </div>
+            
+            </body>
+</html>

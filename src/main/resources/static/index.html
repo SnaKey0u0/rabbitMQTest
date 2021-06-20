@@ -18,19 +18,18 @@
 			  	var hamburger = document.getElementById("hamburger").value;
 			  	var frenchFries = document.getElementById("frenchFries").value;
 			  	var milktea = document.getElementById("milktea").value;
-			  	var content2={'hamburger':hamburger,'frenchFries':frenchFries,'milktea':milktea}
-			  	var dataContent= {'customerName':customerName,'restaurantName':restaurantName,'orderContent':content2}
-                
-                
+			  	var content2={"hamburger":hamburger,"frenchFries":frenchFries,"milktea":milktea}
+			  	var dataContent= {"customerName":customerName,"restaurantName":restaurantName,"orderContent":content2}
+			  	
                 $.ajax({
                     url: "http://localhost:8097/customer/addOrder",
                     type: "POST",
-                    data:dataContent,
+                    data:JSON.stringify(dataContent),
                     dataType: "json",
                     contentType: "application/json;charset=utf-8",
                     success: function (returnData) {
                         window.alert(
-                            "你的名字是" + customerName + "\n餐廳是 " + restaurantName+"\n漢堡要 "+ hamburger+"個\n薯條要 "+frenchFries+"個\n奶茶要 "+milktea+"杯"
+                            "你的名字是" + returnData.customerName + "\n餐廳是 " + returnData.restaurantName+"\n內容要 "+ returnData.orderContent
                         );
                     },
                     error: function (xhr, ajaxOptions, thrownError) {

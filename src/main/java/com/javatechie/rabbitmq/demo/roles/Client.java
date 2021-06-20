@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.javatechie.rabbitmq.demo.config.MessagingConfig;
 import com.javatechie.rabbitmq.demo.dto.Order;
 import com.javatechie.rabbitmq.demo.service.OrderService;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 @RestController
 @RequestMapping(value = "/customer")
@@ -21,9 +23,14 @@ public class Client {
 	@Autowired
 	private RabbitTemplate template;
 	
+	
 	@PostMapping(value = "/addOrder")
 	public String addOrder(@RequestBody Order order) {
+		SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		Date date = new Date();
+		String strDate = sdFormat.format(date);
 		order.setOrderId(UUID.randomUUID().toString());
+		order.setOrderTime(strDate);
 //		Order order = new Order(order,"PROCESS","order place successfully");
 		//轉交訂單給服務生
 		template.convertAndSend(MessagingConfig.EXCHANGE, MessagingConfig.ROUTING_KEY,order);

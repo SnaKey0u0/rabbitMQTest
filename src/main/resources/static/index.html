@@ -20,7 +20,6 @@
 			  	var milktea = document.getElementById("milktea").value;
 			  	var content2={"hamburger":hamburger,"frenchFries":frenchFries,"milktea":milktea}
 			  	var dataContent= {"customerName":customerName,"restaurantName":restaurantName,"orderContent":content2}
-			  	
                 $.ajax({
                     url: "http://localhost:8097/customer/addOrder",
                     type: "POST",
@@ -76,7 +75,6 @@
     <body>
         <div class="container">
             <h2>海洋大學學餐菜單</h2>
-            <p>姆咪姆咪星爆爆</p>
             <form action="#">
                 <div class="form-group">
                 	<label for="usr1">顧客姓名:</label>
@@ -89,7 +87,6 @@
                         <option>漢堡王</option>
                     </select>
                     <br />
-                    
                     <label for="hamburger">輸入漢堡數量:</label>
                     <input type="number" class="form-control" id="hamburger" value="0" min="0"/>
                     <br />
@@ -98,14 +95,6 @@
                     <br />
                     <label for="milktea">輸入奶茶數量:</label>
                     <input type="number" class="form-control" id="milktea" value="0" min="0"/>
-                    <!-- <label for="sel2">Mutiple select list (hold shift to select more than one):</label>
-                    <select multiple class="form-control" id="sel2" name="sellist2">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                    </select> -->
                 </div>
                 <button type="submit" class="btn btn-primary">加入購物車</button>
                 <button type="submit" class="btn btn-primary">清除購物車</button>

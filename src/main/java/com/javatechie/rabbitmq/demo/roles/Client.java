@@ -41,12 +41,6 @@ public class Client {
 		template.convertAndSend(MessagingConfig.EXCHANGE, MessagingConfig.ROUTING_KEY,order);
 		return new JsonObject("{'msg':'success'}");
 	}
-//	@GetMapping(value = "checkOrders/{customerName}")
-//	public ResponseEntity<Order> checkOrders(@PathVariable("customerName") String customerName) {
-//		Order order = OrderService.getOrder(customerName);
-//    	
-//        return ResponseEntity.ok(order);
-//	}
 	@GetMapping(value = "/checkOrders/{customerName}")
 	public ResponseEntity<ArrayList<Order>> checkOrders(@PathVariable("customerName") String customerName) {
 		ArrayList<Order> order = OrderService.getOrder(customerName);

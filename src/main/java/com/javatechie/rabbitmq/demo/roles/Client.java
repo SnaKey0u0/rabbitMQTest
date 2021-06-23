@@ -17,6 +17,8 @@ import com.javatechie.rabbitmq.demo.config.MessagingConfig;
 import com.javatechie.rabbitmq.demo.dto.Order;
 import com.javatechie.rabbitmq.demo.service.OrderService;
 
+import io.swagger.annotations.ApiOperation;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.text.SimpleDateFormat;
@@ -28,7 +30,7 @@ public class Client {
 	private RabbitTemplate template;
 	@Autowired
     private OrderService OrderService;
-	
+	@ApiOperation(value = "新增訂單", notes = "訂單是否成立")
 	@PostMapping(value = "/addOrder")
 	public JsonObject addOrder(@RequestBody Order order) {
 		SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -41,14 +43,16 @@ public class Client {
 		template.convertAndSend(MessagingConfig.EXCHANGE, MessagingConfig.ROUTING_KEY,order);
 		return new JsonObject("{'msg':'success'}");
 	}
+	@ApiOperation(value = "顧客查看訂單", notes = "依customerName找歷史訂單")
 	@GetMapping(value = "/checkOrders/{customerName}")
 	public ResponseEntity<ArrayList<Order>> checkOrders(@PathVariable("customerName") String customerName) {
 		ArrayList<Order> order = OrderService.getOrder(customerName);
     	
 		return ResponseEntity.ok(order);
 	}
-	@GetMapping(value = "checkShoppingCar/{customerName}")
-	public String checkShoppingCar(@PathVariable("customerName") String customerName) {
-		return "fuck 還沒做redis購物車";
-	}
+	
+//	@GetMapping(value = "checkShoppingCar/{customerName}")
+//	public String checkShoppingCar(@PathVariable("customerName") String customerName) {
+//		return "fuck 還沒做redis購物車";
+//	}
 }

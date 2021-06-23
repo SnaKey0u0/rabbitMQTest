@@ -17,6 +17,8 @@ import com.javatechie.rabbitmq.demo.config.MessagingConfig;
 import com.javatechie.rabbitmq.demo.dto.Order;
 import com.javatechie.rabbitmq.demo.service.OrderService;
 
+import io.swagger.annotations.ApiOperation;
+
 @Component
 @RestController
 @RequestMapping(value = "/cooker")
@@ -33,12 +35,13 @@ public class Cooker {
 
 		array.add(order);
 	}
+	@ApiOperation(value = "廚師查看菜單", notes = "廚師查看菜單")
 	@GetMapping(value = "/checkOrders")
 	public ArrayList<Order> checkOrders() {
 		//回傳廚師手上所有訂單
 		return array;
 	}
-	
+	@ApiOperation(value = "廚師確定菜單", notes = "廚師確定菜單")
 	@PostMapping(value = "/confirmOrder/{position}")
 	public JsonObject confirmOrder(@PathVariable("position")String position) {
 		//廚師確認訂單，加入資料庫

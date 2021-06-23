@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.javatechie.rabbitmq.demo.config.MessagingConfig;
 import com.javatechie.rabbitmq.demo.dto.Order;
 
+import io.swagger.annotations.ApiOperation;
+
 @Component
 @RestController
 @RequestMapping(value = "/waiter")
@@ -34,13 +36,13 @@ public class Waiter {
 	public void consumeMessageFromQueue(Order order) {
 		array.add(order);
 	}
-	
+	@ApiOperation(value = "服務員查看菜單", notes = "服務員查看菜單")
 	@GetMapping(value = "/checkOrders")
 	public ArrayList<Order> checkOrders() {
 		//回傳服務生手上所有訂單
 		return array;
 	}
-	
+	@ApiOperation(value = "服務員確認菜單", notes = "服務員確認菜單")
 	@PostMapping(value = "/confirmOrder/{position}")
 	public JsonObject confirmOrder(@PathVariable("position")String position) {
 		//轉交訂單給廚師

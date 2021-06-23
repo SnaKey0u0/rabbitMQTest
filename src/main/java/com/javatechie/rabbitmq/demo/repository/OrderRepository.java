@@ -19,6 +19,4 @@ public interface OrderRepository extends MongoRepository<Order, String> {
 
 	List<Order> findByCustomerName(String CustomerName);
 	
-
-
 }

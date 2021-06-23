@@ -9,8 +9,12 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script>
+        	
             $(document).ready(function () {
                 $('[data-toggle="popover"]').popover();
+                localStorage.setItem('hamburger', parseInt(0));
+				localStorage.setItem('frenchFries', parseInt(0));
+				localStorage.setItem('milktea', parseInt(0));
             });
             function processFormData() {
 				var customerName = document.getElementById("customerName").value;
@@ -37,30 +41,40 @@
                     },
                 });
 			}
-			function addOneOrder() {
+			function addToCart() {
 				var customerName = document.getElementById("customerName").value;
 				var restaurantName = document.getElementById("restaurantName").value;
 			  	var hamburger = document.getElementById("hamburger").value;
 			  	var frenchFries = document.getElementById("frenchFries").value;
 			  	var milktea = document.getElementById("milktea").value;
-			  	var content2={"hamburger":hamburger,"frenchFries":frenchFries,"milktea":milktea}
-			  	var dataContent= {"customerName":customerName,"restaurantName":restaurantName,"orderContent":content2}
-                $.ajax({
-                    url: "http://localhost:8097/api/orders",
-                    type: "POST",
-                    data:JSON.stringify(dataContent),
-                    dataType: "json",
-                    contentType: "application/json;charset=utf-8",
-                    success: function (returnData) {
-                        window.alert(
-                            "你的名字是" + returnData.customerName + "\n餐廳是 " + returnData.restaurantName+"\n內容要 "+ returnData.orderContent
-                        );
-                    },
-                    error: function (xhr, ajaxOptions, thrownError) {
-                        console.log(xhr.status);
-                        console.log(thrownError);
-                    },
-                });
+				localStorage.setItem('customerName', customerName);
+				localStorage.setItem('restaurantName', restaurantName);
+				localStorage.setItem('hamburger', parseInt(localStorage.getItem('hamburger'))+parseInt(hamburger));
+				localStorage.setItem('frenchFries', parseInt(localStorage.getItem('frenchFries'))+parseInt(frenchFries));
+				localStorage.setItem('milktea', parseInt(localStorage.getItem('milktea'))+parseInt(milktea));
+				console.log(localStorage.getItem('customerName'));
+				console.log(localStorage.getItem('restaurantName'));
+				console.log(localStorage.getItem('hamburger'));
+				console.log(localStorage.getItem('frenchFries'));
+				console.log(localStorage.getItem('milktea'));
+			}
+			function checkCart() {
+				tableContent=''
+				tableContent += 
+                `<tr>
+                <td>${localStorage.getItem('restaurantName')}</td>
+                <td>${localStorage.getItem('customerName')}</td>
+                <td>
+	                漢堡: ${localStorage.getItem('hamburger')}<br>
+	                薯條: ${localStorage.getItem('frenchFries')}<br>
+	                奶茶: ${localStorage.getItem('milktea')}
+                <tr>`;
+                $('#myTable1').html(tableContent)
+			}
+			function clearCart(){
+				localStorage.setItem('hamburger', parseInt(0));
+				localStorage.setItem('frenchFries', parseInt(0));
+				localStorage.setItem('milktea', parseInt(0));
 			}
 			function checkOrder() {
 				var customerName = document.getElementById("customerName").value;
@@ -87,7 +101,7 @@
                                         <td><button class="btn btn-primary" onclick="confirmOrder(${i})">確認</button></td>
                                     </tr>`;
                         }
-                        $('#myTable').html(tableContent)
+                        $('#myTable2').html(tableContent)
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
                         console.log(xhr.status);
@@ -122,8 +136,9 @@
                     <label for="milktea">輸入奶茶數量:</label>
                     <input type="number" class="form-control" id="milktea" value="0" min="0"/>
                 </div>
-                <button type="submit" class="btn btn-primary" onclick="addOneOrder();">加入購物車</button>
-                <button type="submit" class="btn btn-primary">清除購物車</button>
+                <button type="submit" class="btn btn-primary" onclick="addToCart();">加入購物車</button>
+                <button type="submit" class="btn btn-primary" onclick="clearCart();">清除購物車</button>
+                <button type="button" class="btn btn-primary" onclick="checkCart();">查看購物車</button>
                 <button type="button" class="btn btn-primary" data-toggle="modal" onclick="processFormData();">送出訂單</button>
                 <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">送出訂單</button>-->
             </form>
@@ -152,9 +167,20 @@
 
         <div class="container">
             <a href="#" data-toggle="popover" title="購物車內容" data-content="沒有東西">購物車</a>
-            
             <!--$('[data-toggle="popover"]').attr('有東西'); -->
         </div>
+        <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>餐廳名稱</th>
+                    <th>姓名</th>
+                    <th>訂單內容</th>
+                  </tr>
+                </thead>
+                <tbody id="myTable1">
+                 
+                </tbody>
+        </table>
         <hr />
         
         <div class="container">
@@ -171,7 +197,7 @@
                     <th>確認訂單</th>
                   </tr>
                 </thead>
-                <tbody id="myTable">
+                <tbody id="myTable2">
                  
                 </tbody>
         </table>

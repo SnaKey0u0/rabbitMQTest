@@ -1,10 +1,5 @@
 package com.javatechie.rabbitmq.demo.dto;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,18 +11,11 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 
-@Entity
 public class Order {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private String orderId;
-	@Column(nullable = false)
 	private String restaurantName;
-	@Column(nullable = false, unique = true)
 	private String customerName;
-	@Column(nullable = false)
 	private String orderTime;
-	@Column(nullable = false)
 	private OrderContent orderContent;
 	public Order(){
 		

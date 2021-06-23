@@ -1,5 +1,6 @@
 package com.javatechie.rabbitmq.demo.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,9 +10,10 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+
 public class Order {
-	private String restaurantName;
 	private String orderId;
+	private String restaurantName;
 	private String customerName;
 	private String orderTime;
 	private OrderContent orderContent;

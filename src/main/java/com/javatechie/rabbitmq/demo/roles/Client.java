@@ -32,7 +32,7 @@ public class Client {
     private OrderService OrderService;
 	@ApiOperation(value = "新增訂單", notes = "訂單是否成立")
 	@PostMapping(value = "/addOrder")
-	public JsonObject addOrder(@RequestBody Order order) {
+	public Order addOrder(@RequestBody Order order) {
 		SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		Date date = new Date();
 		String strDate = sdFormat.format(date);
@@ -41,7 +41,7 @@ public class Client {
 //		Order order = new Order(order,"PROCESS","order place successfully");
 		//轉交訂單給服務生
 		template.convertAndSend(MessagingConfig.EXCHANGE, MessagingConfig.ROUTING_KEY,order);
-		return new JsonObject("{'msg':'success'}");
+		return order;
 	}
 	@ApiOperation(value = "顧客查看訂單", notes = "依customerName找歷史訂單")
 	@GetMapping(value = "/checkOrders/{customerName}")

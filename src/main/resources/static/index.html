@@ -12,9 +12,7 @@
         	
             $(document).ready(function () {
                 $('[data-toggle="popover"]').popover();
-                localStorage.setItem('hamburger', parseInt(0));
-				localStorage.setItem('frenchFries', parseInt(0));
-				localStorage.setItem('milktea', parseInt(0));
+                checkCart()
             });
             function processFormData() {
 				var customerName = document.getElementById("customerName").value;
@@ -22,24 +20,33 @@
 			  	var hamburger = document.getElementById("hamburger").value;
 			  	var frenchFries = document.getElementById("frenchFries").value;
 			  	var milktea = document.getElementById("milktea").value;
-			  	var content2={"hamburger":hamburger,"frenchFries":frenchFries,"milktea":milktea}
-			  	var dataContent= {"customerName":customerName,"restaurantName":restaurantName,"orderContent":content2}
-                $.ajax({
-                    url: "http://localhost:8097/customer/addOrder",
-                    type: "POST",
-                    data:JSON.stringify(dataContent),
-                    dataType: "json",
-                    contentType: "application/json;charset=utf-8",
-                    success: function (returnData) {
-                        window.alert(
-                            "你的名字是" + returnData.customerName + "\n餐廳是 " + returnData.restaurantName+"\n內容要 "+ returnData.orderContent
-                        );
-                    },
-                    error: function (xhr, ajaxOptions, thrownError) {
-                        console.log(xhr.status);
-                        console.log(thrownError);
-                    },
-                });
+
+                datas = JSON.parse(localStorage.getItem('cartRecords'))
+                for(let i of datas){
+                    var content2={"hamburger":i.hamburger,"frenchFries":i.frenchFries,"milktea":i.milktea}
+                    var dataContent= {"customerName":i.customerName,"restaurantName":i.restaurantName,"orderContent":content2}
+                    $.ajax({
+                        url: "http://localhost:8097/customer/addOrder",
+                        type: "POST",
+                        data:JSON.stringify(dataContent),
+                        dataType: "json",
+                        contentType: "application/json;charset=utf-8",
+                        success: function (returnData) {
+                            console.log(returnData);
+                            console.log(returnData['customerName']);
+                            window.alert(
+                                "新增訂單成功!!\n"+
+                                "餐廳: "+returnData['restaurantName']+"\n"+
+                                "姓名: "+returnData['customerName']+"\n"+
+                                "時間: "+returnData['orderTime']
+                            );
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            console.log(xhr.status);
+                            console.log(thrownError);
+                        },
+                    });
+                }
 			}
 			function addToCart() {
 				var customerName = document.getElementById("customerName").value;
@@ -47,34 +54,78 @@
 			  	var hamburger = document.getElementById("hamburger").value;
 			  	var frenchFries = document.getElementById("frenchFries").value;
 			  	var milktea = document.getElementById("milktea").value;
-				localStorage.setItem('customerName', customerName);
-				localStorage.setItem('restaurantName', restaurantName);
-				localStorage.setItem('hamburger', parseInt(localStorage.getItem('hamburger'))+parseInt(hamburger));
-				localStorage.setItem('frenchFries', parseInt(localStorage.getItem('frenchFries'))+parseInt(frenchFries));
-				localStorage.setItem('milktea', parseInt(localStorage.getItem('milktea'))+parseInt(milktea));
-				console.log(localStorage.getItem('customerName'));
-				console.log(localStorage.getItem('restaurantName'));
-				console.log(localStorage.getItem('hamburger'));
-				console.log(localStorage.getItem('frenchFries'));
-				console.log(localStorage.getItem('milktea'));
+                console.log(parseInt(hamburger))
+                console.log(parseInt(frenchFries))
+                console.log(parseInt(milktea))
+                if (parseInt(hamburger)==0 && parseInt(frenchFries)==0&&parseInt(milktea)==0){
+                    window.alert(
+                                "你沒有買任何東西喔"
+                            );
+                }else{
+                    datas = JSON.parse(localStorage.getItem('cartRecords'))
+                    if(datas!=null){
+                        var flag = false;
+                        console.log(datas)
+                        for (let i of datas){
+                            if(i["customerName"]==customerName && i["restaurantName"]==restaurantName){
+                                console.log("找到")
+                                i["hamburger"]= parseInt(i["hamburger"])+parseInt(hamburger)
+                                i["frenchFries"]= parseInt(i["frenchFries"])+parseInt(frenchFries)
+                                i["milktea"]= parseInt(i["milktea"])+parseInt(milktea)
+                                flag=true;
+                                break;
+                            }
+                        }
+                        if(flag==false){
+                            console.log("沒找到")
+                            var cartRecord = {"customerName":customerName,"restaurantName":restaurantName,"hamburger":hamburger,"frenchFries":frenchFries,"milktea":milktea}
+                            datas.push(cartRecord)
+                        }
+                        localStorage.setItem('cartRecords', JSON.stringify(datas));
+                    }else{
+                        console.log("空的")
+                        var cartRecords=[];
+                        var cartRecord = {"customerName":customerName,"restaurantName":restaurantName,"hamburger":hamburger,"frenchFries":frenchFries,"milktea":milktea}
+                        cartRecords.push(cartRecord)
+                        localStorage.setItem('cartRecords', JSON.stringify(cartRecords));
+                    }
+                }
+                
+				// localStorage.setItem('customerName', customerName);
+				// localStorage.setItem('restaurantName', restaurantName);
+				// localStorage.setItem('hamburger', parseInt(localStorage.getItem('hamburger'))+parseInt(hamburger));
+				// localStorage.setItem('frenchFries', parseInt(localStorage.getItem('frenchFries'))+parseInt(frenchFries));
+				// localStorage.setItem('milktea', parseInt(localStorage.getItem('milktea'))+parseInt(milktea));
+				// console.log(localStorage.getItem('customerName'));
+				// console.log(localStorage.getItem('restaurantName'));
+				// console.log(localStorage.getItem('hamburger'));
+				// console.log(localStorage.getItem('frenchFries'));
+				// console.log(localStorage.getItem('milktea'));
+                console.log(localStorage.getItem('cartRecords'));
+                checkCart()
 			}
 			function checkCart() {
-				tableContent=''
-				tableContent += 
-                `<tr>
-                <td>${localStorage.getItem('restaurantName')}</td>
-                <td>${localStorage.getItem('customerName')}</td>
-                <td>
-	                漢堡: ${localStorage.getItem('hamburger')}<br>
-	                薯條: ${localStorage.getItem('frenchFries')}<br>
-	                奶茶: ${localStorage.getItem('milktea')}
-                <tr>`;
-                $('#myTable1').html(tableContent)
+                datas = JSON.parse(localStorage.getItem('cartRecords'))
+                if(datas!=null){
+                    tableContent=''
+                    for (let i of datas){
+                        tableContent += 
+                        `<tr>
+                        <td>${i['restaurantName']}</td>
+                        <td>${i['customerName']}</td>
+                        <td>
+                            漢堡: ${i['hamburger']}<br>
+                            薯條: ${i['frenchFries']}<br>
+                            奶茶: ${i['milktea']}
+                        <tr>`;
+                    }
+                    $('#myTable1').html(tableContent)
+                }
 			}
 			function clearCart(){
-				localStorage.setItem('hamburger', parseInt(0));
-				localStorage.setItem('frenchFries', parseInt(0));
-				localStorage.setItem('milktea', parseInt(0));
+                var cartRecords=[];
+				localStorage.setItem('cartRecords', JSON.stringify(cartRecords));
+                checkCart()
 			}
 			function checkOrder() {
 				var customerName = document.getElementById("customerName").value;
@@ -141,7 +192,6 @@
                 </div>
                 <button type="button" class="btn btn-primary" onclick="addToCart();">加入購物車</button>
                 <button type="button" class="btn btn-primary" onclick="clearCart();">清除購物車</button>
-                <button type="button" class="btn btn-primary" onclick="checkCart();">查看購物車</button>
                 <button type="button" class="btn btn-primary" data-toggle="modal" onclick="processFormData();">送出訂單</button>
                 <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">送出訂單</button>-->
             </form>

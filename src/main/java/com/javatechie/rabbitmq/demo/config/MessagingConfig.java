@@ -9,6 +9,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.core.AnonymousQueue;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 @Configuration
@@ -22,12 +23,12 @@ public class MessagingConfig{
 	public static final String ROUTING_KEY_2 ="my_routingKey2";
 	@Bean
 	public Queue queue() {
-		return new Queue(QUEUE);
+		return new AnonymousQueue();
 	}
 	
 	@Bean
 	public Queue queue2() {
-		return new Queue(QUEUE_2);
+		return new AnonymousQueue();
 	}
 	
 	@Bean
@@ -35,10 +36,10 @@ public class MessagingConfig{
 		return new TopicExchange(EXCHANGE);
 	}
 	
-	@Bean
-	public TopicExchange exchange2() {
-		return new TopicExchange(EXCHANGE_2);
-	}
+//	@Bean
+//	public TopicExchange exchange2() {
+//		return new TopicExchange(EXCHANGE_2);
+//	}
 	
 	@Bean
 	public Binding binding(TopicExchange exchange) {
@@ -46,8 +47,8 @@ public class MessagingConfig{
 	}
 	
 	@Bean
-	public Binding binding2(TopicExchange exchange) {
-		return BindingBuilder.bind(queue2()).to(exchange2()).with(ROUTING_KEY_2);
+	public Binding binding2(TopicExchange exchange, Queue queue2) {
+		return BindingBuilder.bind(queue2()).to(exchange).with(ROUTING_KEY_2);
 	}
 	
 	@Bean

@@ -16,8 +16,11 @@
                   $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
               });
-              
-              $.ajax({
+              checkOrder()
+            });
+
+            function checkOrder(){
+                $.ajax({
                     url:"http://localhost:8097/waiter/checkOrders",
                     contentType: "application/json;charset=utf-8",
                     type: "GET",
@@ -47,7 +50,7 @@
                         console.log(thrownError);
                     },
                 });
-            });
+            }
 
             function confirmOrder(i){
                 $.ajax({
@@ -67,6 +70,34 @@
                     },
                 });
             }
+
+            function hasNew(){
+                $.ajax({
+                    url: "http://localhost:8097/waiter/sentinel",
+                    type: "GET",
+                    dataType: "json",
+                    contentType: "application/json;charset=utf-8",
+                    success: function (returnData) {
+                      console.log(returnData);
+                      if(returnData==false){
+                        window.alert(
+                            "沒有新訂單"
+                        );
+                      }
+                      else{
+                        window.alert(
+                            "有喔!"
+                        );
+                        checkOrder()
+                      }
+                        // location.reload();
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        console.log(xhr.status);
+                        console.log(thrownError);
+                    },
+                });
+            }
             </script>
     </head>
 
@@ -77,6 +108,7 @@
               <a href="index.html" class="btn btn-outline-primary" role="button">顧客系統</a>
               <a href="waiter.html" class="btn btn-outline-primary" role="button">服務生系統</a>
               <a href="cooker.html" class="btn btn-outline-primary" role="button">廚師系統</a>
+              <a class="btn btn-outline-primary" role="button" onclick="hasNew();">看看有沒有新訂單</a>
               <h2>服務生系統</h2>
               <p>服務生可查看目前訂單並轉交給廚師</p>  
               <input class="form-control" id="myInput" type="text" placeholder="Search..">

@@ -29,17 +29,21 @@ public class Waiter {
 	@Autowired
 	private RabbitTemplate template;
 	
+	private Boolean hasNew = false;
+	
 	ArrayList<Order>array=new ArrayList<>();
 	
 	//聽第一個queue
 	@RabbitListener(queues= MessagingConfig.QUEUE)
 	public void consumeMessageFromQueue(Order order) {
+		hasNew=true;
 		array.add(order);
 	}
 	@ApiOperation(value = "服務員查看菜單", notes = "服務員查看菜單")
 	@GetMapping(value = "/checkOrders")
 	public ArrayList<Order> checkOrders() {
 		//回傳服務生手上所有訂單
+		hasNew=false;
 		return array;
 	}
 	@ApiOperation(value = "服務員確認菜單", notes = "服務員確認菜單")
@@ -51,5 +55,10 @@ public class Waiter {
 		//移除暫存訂單
 		array.remove(n);
 		return new JsonObject("{'msg':'success'}");
+	}
+	@ApiOperation(value = "哨兵", notes = "哨兵")
+	@GetMapping(value = "/sentinel")
+	public Boolean hasNew() {
+		return hasNew;
 	}
 }

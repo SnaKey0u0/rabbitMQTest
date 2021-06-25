@@ -13,6 +13,9 @@
             $(document).ready(function () {
                 $('[data-toggle="popover"]').popover();
                 checkCart()
+                const interval = setInterval(function() {
+                    checkOrder()
+                }, 30000);
             });
             function processFormData() {
 				var customerName = document.getElementById("customerName").value;

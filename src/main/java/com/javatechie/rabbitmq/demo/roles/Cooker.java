@@ -26,19 +26,20 @@ public class Cooker {
 	
 	@Autowired
 	private OrderService orderService;
-	
+	private Boolean hasNew = false;
 	ArrayList<Order>array=new ArrayList<>();
 	
 	//聽第二個queue
 	@RabbitListener(queues= MessagingConfig.QUEUE_2)
 	public void consumeMessageFromQueue(Order order) {
-
+		hasNew=true;
 		array.add(order);
 	}
 	@ApiOperation(value = "廚師查看菜單", notes = "廚師查看菜單")
 	@GetMapping(value = "/checkOrders")
 	public ArrayList<Order> checkOrders() {
 		//回傳廚師手上所有訂單
+		hasNew=false;
 		return array;
 	}
 	@ApiOperation(value = "廚師確定菜單", notes = "廚師確定菜單")
@@ -50,5 +51,11 @@ public class Cooker {
 		//移除暫存訂單
 		array.remove(n);
 		return new JsonObject("{'msg':'success'}");
+	}
+	
+	@ApiOperation(value = "哨兵", notes = "哨兵")
+	@GetMapping(value = "/sentinel")
+	public Boolean hasNew() {
+		return hasNew;
 	}
 }
